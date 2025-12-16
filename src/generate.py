@@ -562,7 +562,11 @@ class AttnWeightRAG(BasicRAG):
                 att += t
             att /= (r[1] - r[0] + 1)
             # merge token for att
-            att = torch.tensor([att[rr[0]:rr[1]+1].sum() for rr in range_])
+            # att = torch.tensor([att[rr[0]:rr[1]+1].sum() for rr in range_])
+            att = torch.tensor([
+                att[rr[0]:rr[1]+1].detach().sum().item()
+                for rr in range_
+            ])
             attns.append(att)
             
         # 计算每个超过阈值的 token 在前文的 attentions
